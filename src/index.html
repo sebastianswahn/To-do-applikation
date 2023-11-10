@@ -39,15 +39,17 @@
         <div class="text-center">
           <form id="clearedTask">
             <div class="pb-6">Se och bocka av dem här</div>
-            <ul>
-              <li class="pb-2">Städ <input id="no1" type="checkbox" /></li>
-              <li class="pb-2">
+            <ul id="taskList">
+              <li id="listItem1" class="pb-2">
+                Städa <input id="no1" type="checkbox" />
+              </li>
+              <li id="listItem2" class="pb-2">
                 Ringa samtal <input id="no2" type="checkbox" />
               </li>
-              <li class="pb-2">
+              <li id="listItem3" class="pb-2">
                 Hämta barnen <input id="no3" type="checkbox" />
               </li>
-              <li class="pb-2">
+              <li id="listItem4" class="pb-2">
                 Ta ut soporna <input id="no4" type="checkbox" />
               </li>
             </ul>
@@ -57,6 +59,7 @@
               Klar!
             </button>
             <p id="clearError" class="text-sm text-red-600 pt-4"></p>
+            <p id="clearApproved" class="text-sm text-green-500 pt-4"></p>
           </form>
         </div>
       </section>

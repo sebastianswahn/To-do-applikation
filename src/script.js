@@ -8,6 +8,13 @@ task.addEventListener("submit", (e) => {
 function validateTask() {
   const addTask = document.querySelector("#addTask");
   const taskError = document.querySelector("#taskError");
+  const taskList = document.querySelector("#taskList");
+  const newItem = document.createElement("li");
+  const checkbox = document.createElement("input");
+  checkbox.type = "checkbox";
+  const addTaskValue = addTask.value;
+
+  taskError.textContent = "";
 
   if (addTask.value.trim() === "") {
     taskError.textContent = "Du måste skriva in en uppgift";
@@ -16,7 +23,11 @@ function validateTask() {
   } else if (addTask.value.trim().length > 80) {
     taskError.textContent = "Var god och beskriv din uppgift med max 80 tecken";
   } else {
-    taskError.textContent = "";
+    newItem.textContent = addTaskValue;
+    taskList.appendChild(newItem);
+    newItem.appendChild(checkbox);
+
+    addTask.value = "";
   }
 }
 
@@ -24,6 +35,7 @@ const clearForm = document.querySelector("#clearedTask");
 clearForm.addEventListener("submit", (e) => {
   e.preventDefault();
   validateClear();
+  changeStyle();
 });
 
 function validateClear() {
@@ -31,11 +43,39 @@ function validateClear() {
   const task2 = document.querySelector("#no2");
   const task3 = document.querySelector("#no3");
   const task4 = document.querySelector("#no4");
-  let checkBoxes = task1 && task2 && task3 && task4;
+
+  const clearApproved = document.querySelector("#clearApproved");
+  let checkBoxes = task1 || task2 || task3 || task4;
   const clearError = document.querySelector("#clearError");
+
   if (!checkBoxes.checked) {
     clearError.textContent = "You need to choose atleast 1 task to be cleared";
+  } else if (checkBoxes.checked) {
+    clearApproved.textContent = "Bra jobbat!";
   } else {
     clearError.textContent = "";
+  }
+}
+function changeStyle() {
+  const listItem1 = document.querySelector("#listItem1");
+  const listItem2 = document.querySelector("#listItem2");
+  const listItem3 = document.querySelector("#listItem3");
+  const listItem4 = document.querySelector("#listItem4");
+  const task1 = document.querySelector("#no1");
+  const task2 = document.querySelector("#no2");
+  const task3 = document.querySelector("#no3");
+  const task4 = document.querySelector("#no4");
+
+  if (task1.checked) {
+    listItem1.classList.add("text-green-500", "line-through");
+  }
+  if (task2.checked) {
+    listItem2.classList.add("text-green-500", "line-through");
+  }
+  if (task3.checked) {
+    listItem3.classList.add("text-green-500", "line-through");
+  }
+  if (task4.checked) {
+    listItem4.classList.add("text-green-500", "line-through");
   }
 }
