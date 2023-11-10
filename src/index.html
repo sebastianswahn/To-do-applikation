@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link href="/dist/output.css" rel="stylesheet" />
+    <title>Din TODO-list</title>
+  </head>
+  <body>
+    <header class="p-4 bg-blue-400 rounded-md w-screen text-center">
+      Skapa din To do- list med oss!
+    </header>
+    <main class="w-screen h-screen inline-flex">
+      <section
+        class="p-4 w-1/2 border-solid border-2 border-gray-200 rounded-md"
+      >
+        <div class="text-center pb-8">
+          <form id="task">
+            <div for="task" class="pb-6">Skapa din To do- list här</div>
+
+            <textarea
+              id="addTask"
+              placeholder="What you have to do"
+              class="border-solid border-2 border-gray-600 rounded-lg justify-center"
+            ></textarea>
+            <button
+              type="submit"
+              class="mt-2 border-solid border-2 border-gray-300 w-28 rounded-lg bg-slate-500 text-white"
+            >
+              Lägg till
+            </button>
+            <p id="taskError" class="text-red-700 text-sm pt-4"></p>
+          </form>
+        </div>
+      </section>
+      <section
+        class="p-4 w-1/2 border-solid border-2 border-gray-200 rounded-md"
+      >
+        <div class="text-center">
+          <form id="clearedTask">
+            <div class="pb-6">Se och bocka av dem här</div>
+            <ul>
+              <li class="pb-2">Städ <input id="no1" type="checkbox" /></li>
+              <li class="pb-2">
+                Ringa samtal <input id="no2" type="checkbox" />
+              </li>
+              <li class="pb-2">
+                Hämta barnen <input id="no3" type="checkbox" />
+              </li>
+              <li class="pb-2">
+                Ta ut soporna <input id="no4" type="checkbox" />
+              </li>
+            </ul>
+            <button
+              class="mt-2 border-solid border-2 border-gray-300 w-16 rounded-lg bg-slate-500 text-white"
+            >
+              Klar!
+            </button>
+            <p id="clearError" class="text-sm text-red-600 pt-4"></p>
+          </form>
+        </div>
+      </section>
+      <script src="./script.js"></script>
+    </main>
+  </body>
+</html>
