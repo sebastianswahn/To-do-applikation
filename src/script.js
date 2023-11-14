@@ -36,27 +36,36 @@ const clearForm = document.querySelector("#clearedTask");
 clearForm.addEventListener("submit", (e) => {
   e.preventDefault();
   validateClear();
-  changeStyle();
+  /*   changeStyle() */
 });
 
 function validateClear() {
-  /*   const task1 = document.querySelector("#no1");
+  const checkbox = document.querySelector("input[type='checkbox']");
+  const checkboxes = document.querySelectorAll("input[type='checkbox']");
+  const clearApproved = document.querySelector("#clearApproved");
+  const clearError = document.querySelector("#clearError");
+  if (checkboxes.checked) {
+    clearError.textContent =
+      "Du måste göra klart alla uppgifter innan du kan skicka in";
+  } else if (checkbox.checked) {
+    clearApproved.textContent = "Bra jobbat!";
+  }
+}
+/*   const task1 = document.querySelector("#no1");
   const task2 = document.querySelector("#no2");
   const task3 = document.querySelector("#no3");
   const task4 = document.querySelector("#no4");
  */
-  const clearApproved = document.querySelector("#clearApproved");
-  let checkBoxes = task1 || task2 || task3 || task4;
+/*   const clearApproved = document.querySelector("#clearApproved");
+  let checkboxes = document.querySelectorAll("input[type='checkbox']");
   const clearError = document.querySelector("#clearError");
 
-  if (!checkBoxes.checked) {
-    clearError.textContent = "You need to choose atleast 1 task to be cleared";
-  } else if (checkBoxes.checked) {
+  if (checkboxes.checked) {
     clearApproved.textContent = "Bra jobbat!";
   } else {
     clearError.textContent = "";
   }
-}
+} */
 /* function changeStyle() {
   const listItem1 = document.querySelector("#listItem1");
   const listItem2 = document.querySelector("#listItem2");
