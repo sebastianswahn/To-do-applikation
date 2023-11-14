@@ -3,6 +3,7 @@ const task = document.querySelector("#task");
 task.addEventListener("submit", (e) => {
   e.preventDefault();
   validateTask();
+  setStyleCheckbox();
 });
 
 function validateTask() {
@@ -39,11 +40,11 @@ clearForm.addEventListener("submit", (e) => {
 });
 
 function validateClear() {
-  const task1 = document.querySelector("#no1");
+  /*   const task1 = document.querySelector("#no1");
   const task2 = document.querySelector("#no2");
   const task3 = document.querySelector("#no3");
   const task4 = document.querySelector("#no4");
-
+ */
   const clearApproved = document.querySelector("#clearApproved");
   let checkBoxes = task1 || task2 || task3 || task4;
   const clearError = document.querySelector("#clearError");
@@ -56,7 +57,7 @@ function validateClear() {
     clearError.textContent = "";
   }
 }
-function changeStyle() {
+/* function changeStyle() {
   const listItem1 = document.querySelector("#listItem1");
   const listItem2 = document.querySelector("#listItem2");
   const listItem3 = document.querySelector("#listItem3");
@@ -78,4 +79,20 @@ function changeStyle() {
   if (task4.checked) {
     listItem4.classList.add("text-green-500", "line-through");
   }
+} */
+
+function setStyleCheckbox() {
+  const checkboxes = document.querySelectorAll("input[type='checkbox']");
+
+  checkboxes.forEach((checkbox) => {
+    const li = checkbox.closest("li");
+
+    checkbox.addEventListener("change", () => {
+      if (checkbox.checked) {
+        li.classList.add("text-green-500", "line-through");
+      } else {
+        li.classList.remove("text-green-500", "line-through");
+      }
+    });
+  });
 }
