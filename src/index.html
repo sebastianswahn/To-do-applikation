@@ -17,28 +17,45 @@
         <div class="text-center pb-8">
           <form id="task">
             <div for="task" class="pb-6">Skapa din To do- list här</div>
-
+            <p>Lägg till en sak åt gången</p>
             <textarea
               id="addTask"
-              placeholder="What you have to do"
+              placeholder="Skriv vad du behöver göra här"
               class="border-solid border-2 border-gray-600 rounded-lg justify-center"
             ></textarea>
             <div class="flex-col">
               <button
+                id="confirmAddedtask"
                 type="submit"
-                class="mt-2 border-solid border-2 border-gray-300 w-28 rounded-lg bg-slate-500 text-white"
+                class="mt-2 border-solid border-2 border-gray-300 w-28 rounded-lg bg-slate-500 text-white my-8"
               >
                 Lägg till
               </button>
+              <p id="taskError" class="text-red-700 text-sm pt-4"></p>
+            </form>
+            <form id="saveToDB">
+              <br />
+              <label for="taskListNameDate">Skriv namn och datum här</label>
+              <br />
+              <textarea
+                class="border-solid border-2 border-gray-600 rounded-lg justify-center"
+                id="taskListNameDate"
+                placeholder="Ex. Sebastan 16/11"
+              ></textarea>
+
+              <div>
+                <ul id="taskList"></ul>
+              </div>
               <button
+                id="save"
                 type="submit"
-                class="mt-2 border-solid border-2 border-gray-300 w-28 rounded-lg bg-slate-500 text-white"
+                class="border-solid border-2 border-gray-300 w-28 rounded-lg bg-slate-500 text-white mt-4"
               >
                 Spara
               </button>
             </div>
-            <p id="taskError" class="text-red-700 text-sm pt-4"></p>
-          </form>
+
+        </form>
         </div>
       </section>
       <section
@@ -46,23 +63,27 @@
       >
         <div class="text-center">
           <form id="clearedTask">
-            <div class="pb-6">Se och bocka av dem här</div>
-            <ul id="taskList">
-              <!--               <li id="listItem1" class="pb-2">
-                Städa <input id="no1" type="checkbox" />
-              </li>
-              <li id="listItem2" class="pb-2">
-                Ringa samtal <input id="no2" type="checkbox" />
-              </li>
-              <li id="listItem3" class="pb-2">
-                Hämta barnen <input id="no3" type="checkbox" />
-              </li>
-              <li id="listItem4" class="pb-2">
-                Ta ut soporna <input id="no4" type="checkbox" />
-              </li> -->
-            </ul>
+            <div class="pb-6">Hämta dagens To Do- lista</div>
+            <label for="taskListNameDate">Skriv namn och datum här</label>
+            <br />
+            <textarea
+              class="border-solid border-2 border-gray-600 rounded-lg justify-center"
+              id="taskListNameDate"
+              placeholder="Ex. Sebastan 16/11"
+            ></textarea>
+            <p class="text-xs">
+              Tänk på att skriva samma titel som när du skapade din lista
+            </p>
             <button
-              class="mt-2 border-solid border-2 border-gray-300 w-16 rounded-lg bg-slate-500 text-white"
+              id="getList"
+              type="submit"
+              class="border-solid border-2 border-gray-300 w-28 rounded-lg bg-slate-500 text-white mt-4"
+            >
+              Hämta</button
+            ><br />
+            <button
+              id="missionCompleted"
+              class="hidden mt-2 border-solid border-2 border-gray-300 w-16 rounded-lg bg-slate-500 text-white"
             >
               Klar!
             </button>

@@ -3,7 +3,7 @@ const task = document.querySelector("#task");
 task.addEventListener("submit", (e) => {
   e.preventDefault();
   validateTask();
-  setStyleCheckbox();
+  setStyleTask();
 });
 
 function validateTask() {
@@ -11,8 +11,10 @@ function validateTask() {
   const taskError = document.querySelector("#taskError");
   const taskList = document.querySelector("#taskList");
   const newItem = document.createElement("li");
-  const checkbox = document.createElement("input");
+  newItem.classList = "px-2, mx-2";
+  /*   const checkbox = document.createElement("input");
   checkbox.type = "checkbox";
+  checkbox.classList = "ml-2"; */
   const addTaskValue = addTask.value;
 
   taskError.textContent = "";
@@ -21,76 +23,56 @@ function validateTask() {
     taskError.textContent = "Du måste skriva in en uppgift";
   } else if (addTask.value.trim().length < 5) {
     taskError.textContent = "Din uppgift behöver innehålla minst 5 tecken";
-  } else if (addTask.value.trim().length > 80) {
-    taskError.textContent = "Var god och beskriv din uppgift med max 80 tecken";
+  } else if (addTask.value.trim().length > 35) {
+    taskError.textContent = "Var god och beskriv din uppgift med max 35 tecken";
   } else {
     newItem.textContent = addTaskValue;
     taskList.appendChild(newItem);
-    newItem.appendChild(checkbox);
+    /*     newItem.appendChild(checkbox); */
 
     addTask.value = "";
   }
 }
+const saveToDB = document.querySelector("#saveToDB");
+
+saveToDB.addEventListener("submit", (e) => {
+  e.preventDefault();
+  saveList();
+});
+
+async function saveList() {
+  let title = document.querySelector("#taskListNameDate").value;
+  let listItems = document.querySelectorAll("li");
+
+  let body = Array.from(listItems).map((item) => item.textContent);
+
+  const toDoList = {
+    title,
+    body,
+  };
+  console.log(toDoList);
+  // Add your logic to save to the database here
+}
+
+/*   const res = await fetch(
+    "https://js1-todo-api.vercel.app/api/todos?apikey=a9ee9b5b-682e-455d-b480-ce37dd6450ac",
+    {
+      method: "POST",
+      headers: {
+        "Content-type": "application/json",
+      },
+      body: JSON.stringify(toDoList),
+    }
+  );
+  console.log(res); */
 
 const clearForm = document.querySelector("#clearedTask");
 clearForm.addEventListener("submit", (e) => {
   e.preventDefault();
-  validateClear();
-  /*   changeStyle() */
+  validationCheckboxes();
 });
 
-function validateClear() {
-  const checkbox = document.querySelector("input[type='checkbox']");
-  const checkboxes = document.querySelectorAll("input[type='checkbox']");
-  const clearApproved = document.querySelector("#clearApproved");
-  const clearError = document.querySelector("#clearError");
-  if (checkboxes.checked) {
-    clearError.textContent =
-      "Du måste göra klart alla uppgifter innan du kan skicka in";
-  } else if (checkbox.checked) {
-    clearApproved.textContent = "Bra jobbat!";
-  }
-}
-/*   const task1 = document.querySelector("#no1");
-  const task2 = document.querySelector("#no2");
-  const task3 = document.querySelector("#no3");
-  const task4 = document.querySelector("#no4");
- */
-/*   const clearApproved = document.querySelector("#clearApproved");
-  let checkboxes = document.querySelectorAll("input[type='checkbox']");
-  const clearError = document.querySelector("#clearError");
-
-  if (checkboxes.checked) {
-    clearApproved.textContent = "Bra jobbat!";
-  } else {
-    clearError.textContent = "";
-  }
-} */
-/* function changeStyle() {
-  const listItem1 = document.querySelector("#listItem1");
-  const listItem2 = document.querySelector("#listItem2");
-  const listItem3 = document.querySelector("#listItem3");
-  const listItem4 = document.querySelector("#listItem4");
-  const task1 = document.querySelector("#no1");
-  const task2 = document.querySelector("#no2");
-  const task3 = document.querySelector("#no3");
-  const task4 = document.querySelector("#no4");
-
-  if (task1.checked) {
-    listItem1.classList.add("text-green-500", "line-through");
-  }
-  if (task2.checked) {
-    listItem2.classList.add("text-green-500", "line-through");
-  }
-  if (task3.checked) {
-    listItem3.classList.add("text-green-500", "line-through");
-  }
-  if (task4.checked) {
-    listItem4.classList.add("text-green-500", "line-through");
-  }
-} */
-
-function setStyleCheckbox() {
+function setStyleTask() {
   const checkboxes = document.querySelectorAll("input[type='checkbox']");
 
   checkboxes.forEach((checkbox) => {
