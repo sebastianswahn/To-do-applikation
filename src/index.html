@@ -10,7 +10,7 @@
     <header class="p-4 bg-blue-400 rounded-md w-screen text-center">
       Skapa din To do- list med oss!
     </header>
-    <main class="w-screen h-screen inline-flex">
+    <main class="relative w-screen h-screen inline-flex">
       <section
         class="p-4 w-1/2 border-solid border-2 border-gray-200 rounded-md m-4"
       >
@@ -58,13 +58,14 @@
         </form>
         </div>
       </section>
+      <div class="bg-blue-400 hidden rounded-md absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-80 p-3"><div class="text-center pb-3">Bra jobbat! <br>Din lista är avklarad<br> Du kan nu välja om du vill spara din lista för en annan dag, eller att radera den</div><div class="flex"><button id="changeDate" class="w-1/2 bg-gray-200 border-2 border-solid rounded-xl border-gray-500 h-10 mx-2" type="submit">Spara</button> <button id="deleteObject" class="w-1/2 bg-gray-200 text-center justify-center border-2 border-solid rounded-xl border-gray-500 h-10 mx-2" type="submit">Radera</button></div> </div>
       <section
         class="p-4 w-1/2 border-solid border-2 border-gray-200 rounded-md m-4"
       >
         <div class="text-center">
-          <form id="clearedTask">
+          <form id="getToDoList">
             <div class="pb-6">Hämta dagens To Do- lista</div>
-            <label for="taskListNameDate">Skriv namn och datum här</label>
+<!--             <label for="taskListNameDate">Skriv namn och datum här</label>
             <br />
             <textarea
               class="border-solid border-2 border-gray-600 rounded-lg justify-center"
@@ -73,11 +74,15 @@
             ></textarea>
             <p class="text-xs">
               Tänk på att skriva samma titel som när du skapade din lista
-            </p>
+            </p> -->
+            <div class="flex flex-row text-center items-center justify-center">
+            <form id="getToDoList">
+            <label for="selectList"></label>
+            <select id="selectList" class="border-solid w-2/3 border-2 border-gray-600 rounded-lg mr-4 h-6"></select>
             <button
               id="getList"
               type="submit"
-              class="border-solid border-2 border-gray-300 w-28 rounded-lg bg-slate-500 text-white mt-4"
+              class="border-solid border-2 border-gray-300 rounded-lg bg-slate-500 text-white w-1/3"
             >
               Hämta</button
             ><br />
@@ -89,10 +94,17 @@
             </button>
             <p id="clearError" class="text-sm text-red-600 pt-4"></p>
             <p id="clearApproved" class="text-sm text-green-500 pt-4"></p>
+        </div>
           </form>
         </div>
+        <div id="toDoListContainer" class="bg-white w-full mt-6 rounded-md border-2 border-gray-300 h-72"></div>
+        <form id="resetDB">
+        <button  id="clearDB" type="submit" class="w-28 h-24 bg-slate-400 hidden">Delete</button>
+        </form>
       </section>
-      <script src="./script.js"></script>
     </main>
+      <script src="./script.js"></script>
+      <script src="./script2.js"></script>
+
   </body>
 </html>
