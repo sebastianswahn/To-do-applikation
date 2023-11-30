@@ -25,6 +25,8 @@ function validateTask() {
   }
 }
 
+//validerar innan man lägger till i databasen
+
 saveToDB.addEventListener("submit", (e) => {
   e.preventDefault();
   validateTask();
@@ -64,11 +66,14 @@ async function saveList() {
     console.log(error.message);
   }
 }
+//Sparar To-Do till databasen
 
 function clearForm() {
   const taskListNameDate = document.querySelector("#toDoListContainer");
   taskListNameDate.innerHTML = "";
 }
+
+//tömmer containern innan hämtningen så att det inte blir dubletter
 
 async function fetchTasks() {
   try {
@@ -86,6 +91,8 @@ async function fetchTasks() {
     throw error;
   }
 }
+
+//Hämtar alla tasks från databasen
 
 async function populateDiv(containerId) {
   clearForm();
@@ -151,15 +158,15 @@ async function populateDiv(containerId) {
   }
 }
 
+//Skapar lista av objekten hämtade från databasen
+
 async function removeTask(taskId, li) {
   try {
-    // Make a DELETE request to the API
     const apiUrl = `https://js1-todo-api.vercel.app/api/todos/${taskId}?apikey=a9ee9b5b-682e-455d-b480-ce37dd6450ac`;
     const response = await fetch(apiUrl, {
       method: "DELETE",
       headers: {
         "Content-Type": "application/json",
-        // Add any other headers as needed
       },
     });
 
@@ -168,16 +175,19 @@ async function removeTask(taskId, li) {
     }
 
     console.log(`Task with ID ${taskId} deleted successfully`);
-    li.remove(); // Remove the task from the UI
+    li.remove();
   } catch (error) {
     console.error("Error deleting task:", error);
   }
 }
 
+//Gör deleterequest och tar bort från listan
+
 function displayErrorModal() {
   const errorMessage = document.getElementById("modal");
   errorMessage.classList.remove("hidden");
 }
+//Skapar errormeddelande om man försöker ta bort en Todo som inte är avklarad
 
 function setStyleTask(li, completed) {
   if (completed) {
@@ -186,6 +196,7 @@ function setStyleTask(li, completed) {
     li.classList.remove("text-green-500", "line-through");
   }
 }
+//Sätter en visuell klarmarkering för användare
 
 form2.addEventListener("submit", (e) => {
   e.preventDefault();
@@ -214,6 +225,7 @@ function setStatus() {
     });
   });
 }
+//Sätter status på databasen utifrån om To Do checkboxen är checkad eller inte
 
 async function updateTaskStatus(taskId, completed) {
   const apiUrl = `https://js1-todo-api.vercel.app/api/todos/${taskId}?apikey=a9ee9b5b-682e-455d-b480-ce37dd6450ac`;
@@ -244,7 +256,7 @@ async function updateTaskStatus(taskId, completed) {
     console.error("Error updating task status:", error.message);
   }
 }
-
+//uppdaterar databasens completed- status
 const okBtn = document.getElementById("goBack");
 okBtn.addEventListener("click", (e) => {
   e.preventDefault();
@@ -255,3 +267,4 @@ function closeModal() {
   const errorMessage = document.getElementById("modal");
   errorMessage.classList.add("hidden");
 }
+//modalhantering
