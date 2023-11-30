@@ -2,29 +2,13 @@ const task = document.querySelector("#task");
 const saveToDB = document.querySelector("#saveToDB");
 const form2 = document.querySelector("#getToDoList");
 const listBin = document.getElementById("toDoListContainer");
+const checkboxes = document.querySelectorAll("input[type='checkbox']");
 const apiUrl =
   "https://js1-todo-api.vercel.app/api/todos?apikey=a9ee9b5b-682e-455d-b480-ce37dd6450ac";
-
-/* task.addEventListener("submit", (e) => {
-  e.preventDefault();
-  validateTask();
-  setStyleTask();
-}); */
-
-//Mycket förvirrad över måsvingarna, har flyttat dem en miljon gånger men ja jag vet fortfarande inte om det rätt
 
 function validateTask() {
   const addTask = document.querySelector("#addTask");
   const taskError = document.getElementById("clearError");
-  /*   const taskList = document.querySelector("#taskList");
-  const newItem = document.createElement("li");
-  newItem.classList = "px-2, mx-2"; */
-
-  /*   const checkbox = document.createElement("input");
-  checkbox.type = "checkbox";
-  checkbox.classList = "ml-2"; DEN HÄR VILL DU lägga till tillsammans med getrequest för checkboxarna förstör arrayen */
-
-  /*   const addTaskValue = addTask.value; */
 
   taskError.textContent = "";
 
@@ -36,15 +20,10 @@ function validateTask() {
     taskError.textContent = "Var god och beskriv din uppgift med max 35 tecken";
   } else {
     saveList();
-    /*     newItem.appendChild(checkbox); ^ */
 
     addTask.value = "";
   }
 }
-
-//Den här funktionen är för senare när jag lyckats hämta min to do list från databasen
-
-//Nu sparar jag To -do listan med titel och tasks i en array
 
 saveToDB.addEventListener("submit", (e) => {
   e.preventDefault();
@@ -129,6 +108,9 @@ async function populateDiv(containerId) {
       checkbox.type = "checkbox";
       checkbox.checked = task.completed;
       checkbox.classList.add("ml-2");
+      checkbox.id = `taskCheckbox_${task._id}`;
+
+      setStyleTask(li, checkbox.checked);
 
       const taskTitle = document.createElement("span");
       taskTitle.textContent = task.title;
@@ -138,9 +120,24 @@ async function populateDiv(containerId) {
       li.appendChild(checkbox);
 
       placeTasks.appendChild(li);
+
+      checkbox.addEventListener("change", () => {
+        const taskId = checkbox.id.split("_")[1];
+        updateTaskStatus(taskId, checkbox.checked);
+        setStyleTask(li, checkbox.checked);
+      });
     });
   } catch (error) {
     console.error("Error populating dropdown:", error);
+  }
+}
+
+function setStyleTask(li, completed) {
+  // Add or remove classes based on the completed status
+  if (completed) {
+    li.classList.add("text-green-500", "line-through");
+  } else {
+    li.classList.remove("text-green-500", "line-through");
   }
 }
 
@@ -150,10 +147,10 @@ form2.addEventListener("submit", (e) => {
 });
 
 listBin.addEventListener("click", (e) => {
-  setStyleTask();
+  setStatus();
 });
 
-function setStyleTask() {
+/* function setStyleTask() {
   const checkboxes = document.querySelectorAll("input[type='checkbox']");
 
   checkboxes.forEach((checkbox) => {
@@ -167,63 +164,82 @@ function setStyleTask() {
       }
     });
   });
-}
-/* async function getSavedList() {
-  try {
-    const selectedTitle = document.querySelector("#selectList").value;
-
-    console.log("selected title:", selectedTitle);
-    //Här går något fel och jag tror det är jag som bara inte kan komma på hur jag kan välja hela objektet istället för titeln bara
-
-        const apiUrl = `https://js1-todo-api.vercel.app/api/todos?title=${encodeURIComponent(
-      selectedTitle
-    )}&apikey=a9ee9b5b-682e-455d-b480-ce37dd6450ac`;
-
-    const response = await fetch(apiUrl, {
-      method: "GET",
-      headers: {
-        "Content-type": "application/json",
-      },
-    });
-    if (!response.ok) {
-      throw new Error(`HTTP error!  Status: ${response.status}`);
-    }
-    const listData = await response.json();
-    console.log("Task data:", listData);
-
-    displayListData(listData);
-  } catch (error) {
-    console.error("Error:", error);
-  }
 } */
+function setStatus() {
+  const checkboxes = document.querySelectorAll("input[type='checkbox']");
 
-/* function displayListData(listData) {
-  const taskContainer = document.getElementById("toDoListContainer");
+  checkboxes.forEach((checkbox) => {
+    checkbox.addEventListener("change", () => {
+      const taskId = checkbox.id.split("_")[1];
+      const completed = checkbox.checked; // Get the checkbox state
 
-  // Rensar ur om de finns nåt content där
-  taskContainer.innerHTML = "";
+      if (completed) {
+        console.log("Checkbox checked. Task ID:", taskId);
+      } else {
+        console.log("Checkbox unchecked. Task ID:", taskId);
+      }
 
-  // Tänkte att detta skulle funka men det gör det INTE
-  const objectDetails = document.createElement("div");
-  objectDetails.textContent = `${JSON.stringify("title", "body")}`;
-  taskContainer.appendChild(objectDetails);
+      updateTaskStatus(taskId, completed); // Pass the completed state to the function
+    });
+  });
+}
 
-  //Här kommercheckboxarna, jag ska vänta att sätta in stylingfunktionen tills jag fått lite mer ordning och här är det verkligen kaos jag har ingen aning om vad jag håller på med
+async function updateTaskStatus(taskId, completed) {
+  const apiUrl = `https://js1-todo-api.vercel.app/api/todos/${taskId}?apikey=a9ee9b5b-682e-455d-b480-ce37dd6450ac`;
 
-  listData.forEach((listItem) => {
-    const listItem = document.createElement("div");
+  try {
+    // Fetch the current task data
+    const response = await fetch(apiUrl);
 
-    const checkbox = document.createElement("input");
-    checkbox.type = "checkbox";
-    checkbox.id = `taskCheckbox`;
-    checkbox.name = "taskCheckbox";
-    listItem.appendChild(checkbox);
+    if (!response.ok) {
+      throw new Error("Failed to fetch task data");
+    }
 
-    const label = document.createElement("label");
-    label.textContent = list.title;
-    label.htmlFor = `taskCheckbox`;
-    listItem.appendChild(label);
+    const taskData = await response.json();
 
-    taskContainer.appendChild(listItem);
+    // Update the completed status based on the checkbox state
+    taskData.completed = completed;
+
+    // Make the PUT request to update the task
+    const putResponse = await fetch(apiUrl, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(taskData),
+    });
+
+    if (!putResponse.ok) {
+      throw new Error("Failed to update task status");
+    }
+
+    // Handle success if needed
+  } catch (error) {
+    console.error("Error updating task status:", error.message);
+  }
+}
+
+const finishedTaskBtn = document.getElementById("missionCompleted");
+
+finishedTaskBtn.addEventListener("click", (e) => {
+  e.preventDefault();
+  validateFinishedTasks();
+});
+/* 
+function validateFinishedTasks() {
+  let atLeastOneChecked = false;
+  checkboxes.forEach((checkbox) => {
+    if (checkbox.checked) {
+      atLeastOneChecked = true;
+      const taskId = checkbox.id.split("_")[1];
+      console.log("Updating task status for task ID:", taskId);
+
+      updateTaskStatus(taskId);
+    }
   });
 } */
+/* 
+function updateTaskStatus(taskId) {
+  const apiUrl = `https://js1-todo-api.vercel.app/api/todos/${taskId}`;
+
+   */
