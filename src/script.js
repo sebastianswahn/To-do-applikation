@@ -104,10 +104,14 @@ async function populateDiv(containerId) {
         "p-2",
         "mr-2"
       );
+
+      const checkboxContainer = document.createElement("div");
+      checkboxContainer.classList.add("flex", "items-center");
+
       const checkbox = document.createElement("input");
       checkbox.type = "checkbox";
       checkbox.checked = task.completed;
-      checkbox.classList.add("ml-2");
+      checkbox.classList.add("mr-2"); // Adjust the margin for spacing
       checkbox.id = `taskCheckbox_${task._id}`;
 
       setStyleTask(li, checkbox.checked);
@@ -116,8 +120,13 @@ async function populateDiv(containerId) {
       taskTitle.textContent = task.title;
       taskTitle.className = "flex-grow";
 
+      const removeIcon = document.createElement("i");
+      removeIcon.className = "fa fa-trash text-red-500 cursor-pointer "; // Adjust the icon class as needed
+
+      checkboxContainer.appendChild(checkbox);
+      li.appendChild(checkboxContainer);
       li.appendChild(taskTitle);
-      li.appendChild(checkbox);
+      li.appendChild(removeIcon);
 
       placeTasks.appendChild(li);
 
@@ -126,14 +135,38 @@ async function populateDiv(containerId) {
         updateTaskStatus(taskId, checkbox.checked);
         setStyleTask(li, checkbox.checked);
       });
+
+      removeIcon.addEventListener("click", () => {
+        const taskId = checkbox.id.split("_")[1];
+
+        if (checkbox.checked) {
+          // Allow removal if the checkbox is checked
+          removeTask(taskId);
+          li.remove(); // Remove the task from the UI
+        } else {
+          // Display modal or error message for unchecked checkbox
+          displayErrorModal();
+        }
+      });
     });
   } catch (error) {
     console.error("Error populating dropdown:", error);
   }
 }
 
+// Function to remove a task (update as needed)
+function removeTask(taskId) {
+  // Implement your logic to remove the task
+  console.log(`Removing task with ID: ${taskId}`);
+}
+
+// Function to display error modal or message (update as needed)
+function displayErrorModal() {
+  const errorMessage = document.getElementById("modal");
+  errorMessage.classList.remove("hidden");
+}
+
 function setStyleTask(li, completed) {
-  // Add or remove classes based on the completed status
   if (completed) {
     li.classList.add("text-green-500", "line-through");
   } else {
@@ -150,21 +183,6 @@ listBin.addEventListener("click", (e) => {
   setStatus();
 });
 
-/* function setStyleTask() {
-  const checkboxes = document.querySelectorAll("input[type='checkbox']");
-
-  checkboxes.forEach((checkbox) => {
-    const li = checkbox.closest("li");
-
-    checkbox.addEventListener("change", () => {
-      if (checkbox.checked) {
-        li.classList.add("text-green-500", "line-through");
-      } else {
-        li.classList.remove("text-green-500", "line-through");
-      }
-    });
-  });
-} */
 function setStatus() {
   const checkboxes = document.querySelectorAll("input[type='checkbox']");
 
@@ -179,7 +197,7 @@ function setStatus() {
         console.log("Checkbox unchecked. Task ID:", taskId);
       }
 
-      updateTaskStatus(taskId, completed); // Pass the completed state to the function
+      updateTaskStatus(taskId, completed);
     });
   });
 }
@@ -188,7 +206,6 @@ async function updateTaskStatus(taskId, completed) {
   const apiUrl = `https://js1-todo-api.vercel.app/api/todos/${taskId}?apikey=a9ee9b5b-682e-455d-b480-ce37dd6450ac`;
 
   try {
-    // Fetch the current task data
     const response = await fetch(apiUrl);
 
     if (!response.ok) {
@@ -197,10 +214,8 @@ async function updateTaskStatus(taskId, completed) {
 
     const taskData = await response.json();
 
-    // Update the completed status based on the checkbox state
     taskData.completed = completed;
 
-    // Make the PUT request to update the task
     const putResponse = await fetch(apiUrl, {
       method: "PUT",
       headers: {
@@ -212,34 +227,18 @@ async function updateTaskStatus(taskId, completed) {
     if (!putResponse.ok) {
       throw new Error("Failed to update task status");
     }
-
-    // Handle success if needed
   } catch (error) {
     console.error("Error updating task status:", error.message);
   }
 }
 
-const finishedTaskBtn = document.getElementById("missionCompleted");
-
-finishedTaskBtn.addEventListener("click", (e) => {
+const okBtn = document.getElementById("goBack");
+okBtn.addEventListener("click", (e) => {
   e.preventDefault();
-  validateFinishedTasks();
+  closeModal();
 });
-/* 
-function validateFinishedTasks() {
-  let atLeastOneChecked = false;
-  checkboxes.forEach((checkbox) => {
-    if (checkbox.checked) {
-      atLeastOneChecked = true;
-      const taskId = checkbox.id.split("_")[1];
-      console.log("Updating task status for task ID:", taskId);
 
-      updateTaskStatus(taskId);
-    }
-  });
-} */
-/* 
-function updateTaskStatus(taskId) {
-  const apiUrl = `https://js1-todo-api.vercel.app/api/todos/${taskId}`;
-
-   */
+function closeModal() {
+  const errorMessage = document.getElementById("modal");
+  errorMessage.classList.add("hidden");
+}

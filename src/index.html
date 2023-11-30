@@ -4,6 +4,8 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link href="/dist/output.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" />
+
     <title>Din TODO-list</title>
   </head>
   <body>
@@ -43,23 +45,10 @@
         id="modal"
         class="bg-blue-400 hidden rounded-md absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-80 p-3"
       >
-        <div class="text-center pb-3">Bra jobbat! <br /></div>
-        <div class="flex">
-          <button
-            id="changeDate"
-            class="w-1/2 bg-gray-200 border-2 border-solid rounded-xl border-gray-500 h-10 mx-2"
-            type="submit"
-          >
-            Spara
-          </button>
-          <button
-            id="deleteObject"
-            class="w-1/2 bg-gray-200 text-center justify-center border-2 border-solid rounded-xl border-gray-500 h-10 mx-2"
-            type="submit"
-          >
-            Radera
-          </button>
-        </div>
+        <div class="text-center pb-3">Du kan endast ta bort klarmarkerade To-do's <br /></div>
+        <div class="flex items-center justify-center text-center">
+        <button class="border-solid border-2 border-gray-300 w-28 rounded-lg bg-slate-500 text-white mt-4" id="goBack">Okej</button>
+        </div></div>
       </div>
       <section
         class="p-4 w-1/2 border-solid border-2 border-gray-200 rounded-md m-4"
@@ -83,16 +72,7 @@
             ></div>
           </form>
         </div>
-        <div class="flex flex-col items-center justify-center">
-          <button
-            id="missionCompleted"
-            class="mt-2 border-solid border-2 border-gray-300 w-16 rounded-lg bg-slate-500 text-white"
-          >
-            Klar!
-          </button>
-          <br />
-          <p id="errorMsgValidation" class="text-red-600 text-xs"></p>
-        </div>
+
         <form id="resetDB">
           <button id="clearDB" type="submit" class="w-28 h-24 bg-slate-400">
             Delete
