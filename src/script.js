@@ -111,7 +111,7 @@ async function populateDiv(containerId) {
       const checkbox = document.createElement("input");
       checkbox.type = "checkbox";
       checkbox.checked = task.completed;
-      checkbox.classList.add("mr-2"); // Adjust the margin for spacing
+      checkbox.classList.add("mr-2");
       checkbox.id = `taskCheckbox_${task._id}`;
 
       setStyleTask(li, checkbox.checked);
@@ -121,7 +121,7 @@ async function populateDiv(containerId) {
       taskTitle.className = "flex-grow";
 
       const removeIcon = document.createElement("i");
-      removeIcon.className = "fa fa-trash text-red-500 cursor-pointer "; // Adjust the icon class as needed
+      removeIcon.className = "fa fa-trash text-red-500 cursor-pointer ";
 
       checkboxContainer.appendChild(checkbox);
       li.appendChild(checkboxContainer);
@@ -140,11 +140,8 @@ async function populateDiv(containerId) {
         const taskId = checkbox.id.split("_")[1];
 
         if (checkbox.checked) {
-          // Allow removal if the checkbox is checked
-          removeTask(taskId);
-          li.remove(); // Remove the task from the UI
+          removeTask(taskId, li);
         } else {
-          // Display modal or error message for unchecked checkbox
           displayErrorModal();
         }
       });
@@ -154,13 +151,29 @@ async function populateDiv(containerId) {
   }
 }
 
-// Function to remove a task (update as needed)
-function removeTask(taskId) {
-  // Implement your logic to remove the task
-  console.log(`Removing task with ID: ${taskId}`);
+async function removeTask(taskId, li) {
+  try {
+    // Make a DELETE request to the API
+    const apiUrl = `https://js1-todo-api.vercel.app/api/todos/${taskId}?apikey=a9ee9b5b-682e-455d-b480-ce37dd6450ac`;
+    const response = await fetch(apiUrl, {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+        // Add any other headers as needed
+      },
+    });
+
+    if (!response.ok) {
+      throw new Error("Failed to delete task");
+    }
+
+    console.log(`Task with ID ${taskId} deleted successfully`);
+    li.remove(); // Remove the task from the UI
+  } catch (error) {
+    console.error("Error deleting task:", error);
+  }
 }
 
-// Function to display error modal or message (update as needed)
 function displayErrorModal() {
   const errorMessage = document.getElementById("modal");
   errorMessage.classList.remove("hidden");
@@ -189,7 +202,7 @@ function setStatus() {
   checkboxes.forEach((checkbox) => {
     checkbox.addEventListener("change", () => {
       const taskId = checkbox.id.split("_")[1];
-      const completed = checkbox.checked; // Get the checkbox state
+      const completed = checkbox.checked;
 
       if (completed) {
         console.log("Checkbox checked. Task ID:", taskId);
